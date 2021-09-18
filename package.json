@@ -1,0 +1,11 @@
+{
+  "name": "testebackendmelhorenvio",
+  "version": "1.0.0",
+  "description": "This is made to satisfy a test for a back-end position at MelhorEnvio",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gustavo Giacomeli (GGiacomeli)",
+  "license": "ISC"
+}
