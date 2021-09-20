@@ -1,0 +1,5 @@
+PGHOST='yourhost'
+PGUSER='yourpostgresuser'
+PGDATABASE='yourdatabase'
+PGPASSWORD=yourpassword
+PGPORT=yourpgport
