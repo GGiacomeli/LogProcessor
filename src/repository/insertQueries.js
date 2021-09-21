@@ -13,10 +13,10 @@ const pool = new Pool();
  *
  * @param {authenticated_entity} value is expected to be a uuid from the log file
  */
-async function insertConsumer(value) {
+function insertConsumer(value) {
   const query =
     "INSERT INTO consumers(authenticated_entity) VALUES ($1) ON CONFLICT DO NOTHING;";
-  await pool.query(query, [value], (err) => {
+  pool.query(query, [value], (err) => {
     if (err) {
       throw new Error(err.stack);
     }
@@ -26,10 +26,10 @@ async function insertConsumer(value) {
  *
  * @param {uuid} value is expected to be a uuid value from the authenticated_entity object from the log file
  */
-async function insertService(value) {
+function insertService(value) {
   const query =
     "INSERT INTO services(service_id) VALUES ($1) ON CONFLICT DO NOTHING;";
-  await pool.query(query, [value], (err) => {
+  pool.query(query, [value], (err) => {
     if (err) {
       throw new Error(err.stack);
     }
@@ -44,11 +44,11 @@ async function insertService(value) {
  * proxy, kong and requests are expected to be int values from latencies object from the log file
  * serviceId is expected to be a uuid value from service object from the log file
  */
-async function insertLatencies(proxy, kong, request, serviceId) {
+function insertLatencies(proxy, kong, request, serviceId) {
   const values = [proxy, kong, request, serviceId];
   const query =
     "INSERT INTO latencies (proxy, kong, request, fk_service_id) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING";
-  await pool.query(query, values, (err) => {
+  pool.query(query, values, (err) => {
     if (err) {
       throw new Error(err.stack);
     }
@@ -61,11 +61,11 @@ async function insertLatencies(proxy, kong, request, serviceId) {
  * service_id and authenticated_entity are expected to be uuid values from service and authenticated_entity
  * given by the log file
  */
-async function insertRequest(service, consumer) {
+function insertRequest(service, consumer) {
   const values = [service, consumer];
   const query =
     "INSERT INTO requests (fk_service_id, fk_consumer_authenticated_entity) VALUES ($1, $2) ON CONFLICT DO NOTHING";
-  await pool.query(query, values, (err) => {
+  pool.query(query, values, (err) => {
     if (err) {
       throw new Error(err.stack);
     }
