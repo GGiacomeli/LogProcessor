@@ -1,3 +1,3 @@
-const { processFile } = require("./src/services/fileProcessing");
+const processfile = require("./src/services/fileProcessing");
 
-processFile.readLogs("logs.txt");
+processfile.readLogs("logs.txt");
