@@ -5,7 +5,9 @@ const queries = require("../repository/insertQueries");
 
 /**
  * saveData() calls the insertQueries repository and saves all relevant data do its respectives tables
- * @param {JSON} line is a line given by the readLogs method
+ * this method is a async await function waiting on each method call to avoid problems
+ * where it tries to call insertRequest() before insertConsumer and/or insertService
+ * @param {JSON} line is a line given by readLogs()
  */
 async function saveData(line) {
   await queries.insertConsumer(line.authenticated_entity.consumer_id.uuid);
