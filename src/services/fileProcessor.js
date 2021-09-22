@@ -23,6 +23,7 @@ async function saveData(line) {
     line.authenticated_entity.consumer_id.uuid
   );
 }
+
 /**
  *  readLogs() handle a txt file, it opens, read each line,
  *  sends the output to saveData()
@@ -31,19 +32,16 @@ async function saveData(line) {
  * @param {path} filePath
  *
  */
-function readLogs(filePath) {
-  const rl = readline.createInterface({
+async function readLogs(filePath) {
+  const rl = await readline.createInterface({
     input: fs.createReadStream(filePath),
     output: process.stdout,
     terminal: false,
   });
-  rl.on("line", (line) => {
-    // TODO this should not be logging on console, it should send eachline to another method
-    saveData(JSON.parse(line));
+  rl.on("line", async (line) => {
+    await saveData(JSON.parse(line));
   });
 }
 
-/**
- * this module aims to read a log file, transform it in JSON
- */
-module.exports = { readLogs };
+// calls the function once with the desired filepath (in this case ./input/FileName)
+readLogs("./input/logs.txt");
