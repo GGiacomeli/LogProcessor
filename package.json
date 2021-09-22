@@ -4,7 +4,9 @@
   "description": "This is made to satisfy a test for a back-end position at MelhorEnvio",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ProcessFile": "node ./src/services/fileProcessor",
+    "GenerateReports": "node ./src/services/reportGenerator"
   },
   "author": "Gustavo Giacomeli (GGiacomeli)",
   "license": "ISC",
