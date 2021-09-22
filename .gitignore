@@ -5,3 +5,7 @@ node_modules/
 npm-debug.log
 package-lock.json
 test/*.log
+logs.txt
+./src/config/.env
+src/config/.env
+todo.txt
