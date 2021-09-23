@@ -1,16 +1,5 @@
-// require dotenv gets the db auth from a .env file located @Param path
-require("dotenv").config({ path: "./src/config/.env" });
-const { Pool } = require("pg");
 const csvHelper = require("../helpers/csvHelper");
-
-/**
- * creates a pool Connection to the database with .env params
- * read docs for more info
- * https://node-postgres.com/features/connecting
- */
-const pool = new Pool({
-  allowExitOnIdle: true,
-});
+const db = require("../../db");
 
 /**
  * requestsPerConsumer() runs a query to get requests from a consumer (authenticated_entity) on table requests
@@ -19,12 +8,12 @@ const pool = new Pool({
  */
 function requestsPerConsumer() {
   const query =
-    "SELECT fk_consumer_authenticated_entity, COUNT (fk_consumer_authenticated_entity) FROM requests GROUP BY fk_consumer_authenticated_entity";
-  pool.query(query, (err, res) => {
+    "SELECT fk_consumer_authenticated_entity AS consumer, COUNT (fk_consumer_authenticated_entity) FROM requests GROUP BY fk_consumer_authenticated_entity";
+  db.query(query, (err, res) => {
     if (err) {
       throw err;
     } else {
-      csvHelper.generateCSV("consumerPerService", res.rows);
+      csvHelper.generateCSV("consumerRequests", res.rows);
     }
   });
 }
@@ -35,8 +24,8 @@ function requestsPerConsumer() {
  */
 async function requestsPerService() {
   const query =
-    "SELECT fk_service_id, COUNT (fk_service_id) from requests GROUP BY fk_service_id";
-  await pool.query(query, (err, res) => {
+    "SELECT fk_service_id AS service, COUNT (fk_service_id) from requests GROUP BY fk_service_id";
+  await db.query(query, (err, res) => {
     if (err) {
       throw err;
     } else {
@@ -50,8 +39,8 @@ async function requestsPerService() {
  */
 function avgLatency() {
   const query =
-    "SELECT fk_service_id, AVG(proxy) as proxy, AVG(kong) as kong, AVG(request) as request FROM latencies GROUP BY fk_service_id";
-  pool.query(query, (err, res) => {
+    "SELECT fk_service_id AS service, AVG(proxy) as proxyAvg, AVG(kong) as kongTimeAvg, AVG(request) as requestAvg FROM latencies GROUP BY fk_service_id";
+  db.query(query, (err, res) => {
     if (err) {
       throw err;
     } else {
