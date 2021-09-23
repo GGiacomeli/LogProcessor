@@ -1,5 +1,3 @@
-// require dotenv gets the db auth from a .env file located @Param path
-require("dotenv").config({ path: "./src/config/.env" });
 const db = require("../../db");
 
 /**
