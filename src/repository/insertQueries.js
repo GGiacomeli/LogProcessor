@@ -1,15 +1,6 @@
 // require dotenv gets the db auth from a .env file located @Param path
 require("dotenv").config({ path: "./src/config/.env" });
-const { Pool } = require("pg");
-
-/**
- * creates a pool Connection to the database with .env params
- * read docs for more info
- * https://node-postgres.com/features/connecting
- */
-const pool = new Pool({
-  allowExitOnIdle: true,
-});
+const db = require("../../db");
 
 /**
  *
@@ -18,7 +9,7 @@ const pool = new Pool({
 async function insertConsumer(value) {
   const queryString =
     "INSERT INTO consumers(authenticated_entity) VALUES ($1) ON CONFLICT DO NOTHING;";
-  await pool.query(queryString, [value], (err) => {
+  await db.query(queryString, [value], (err) => {
     if (err) throw err.stack;
   });
 }
@@ -29,7 +20,7 @@ async function insertConsumer(value) {
 async function insertService(value) {
   const query =
     "INSERT INTO services(service_id) VALUES ($1) ON CONFLICT DO NOTHING;";
-  await pool.query(query, [value], (err) => {
+  await db.query(query, [value], (err) => {
     if (err) {
       throw new Error(err.stack);
     }
@@ -48,7 +39,7 @@ async function insertLatencies(proxy, kong, request, serviceId) {
   const values = [proxy, kong, request, serviceId];
   const query =
     "INSERT INTO latencies (proxy, kong, request, fk_service_id) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING";
-  await pool.query(query, values, (err) => {
+  await db.query(query, values, (err) => {
     if (err) {
       throw new Error(err.stack);
     }
@@ -65,7 +56,7 @@ async function insertRequest(service, consumer) {
   const values = [service, consumer];
   const query =
     "INSERT INTO requests (fk_service_id, fk_consumer_authenticated_entity) VALUES ($1, $2) ON CONFLICT DO NOTHING";
-  await pool.query(query, values, (err) => {
+  await db.query(query, values, (err) => {
     if (err) {
       throw new Error(err.stack);
     }
